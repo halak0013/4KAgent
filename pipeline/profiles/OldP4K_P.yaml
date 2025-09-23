@@ -1,0 +1,14 @@
+Name: OldP4K-P
+
+PerceptionAgent: depictqa  
+Reflection: hpsv2+metric 
+
+Upscale4K: true
+ScaleFactor: null
+RestoreOption: null
+
+FaceRestore: true
+Brightening: false
+OldPhotoRestoration: true
+
+RestorePerference: Perception

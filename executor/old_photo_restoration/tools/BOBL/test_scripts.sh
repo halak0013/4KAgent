@@ -1,0 +1,1 @@
+python run.py --input_folder="./test_images/old_w_scratch" --output_folder="./test_results_official" --GPU=0 --with_scratch

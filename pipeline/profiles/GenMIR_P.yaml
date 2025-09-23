@@ -1,0 +1,13 @@
+Name: GenMIR-P
+
+PerceptionAgent: depictqa  
+Reflection: hpsv2+metric  
+
+Upscale4K: false
+ScaleFactor: null
+RestoreOption: null
+
+FaceRestore: false
+Brightening: true
+
+RestorePerference: Perception

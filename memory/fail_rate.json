@@ -1,0 +1,178 @@
+{
+  "dark+noise": {
+    "denoising+brightening": {
+      "total": 360,
+      "dark": 78,
+      "noise": 154,
+      "fail rate": {
+        "dark": 0.21666666666666667,
+        "noise": 0.42777777777777776,
+        "total": 0.3222222222222222
+      }
+    },
+    "brightening+denoising": {
+      "total": 360,
+      "dark": 101,
+      "noise": 150,
+      "fail rate": {
+        "dark": 0.28055555555555556,
+        "noise": 0.4166666666666667,
+        "total": 0.3486111111111111
+      }
+    }
+  },
+  "defocus blur+haze": {
+    "defocus deblurring+dehazing": {
+      "total": 240,
+      "defocus blur": 1,
+      "haze": 86,
+      "fail rate": {
+        "defocus blur": 0.004166666666666667,
+        "haze": 0.35833333333333334,
+        "total": 0.18125
+      }
+    },
+    "dehazing+defocus deblurring": {
+      "total": 240,
+      "defocus blur": 0,
+      "haze": 96,
+      "fail rate": {
+        "defocus blur": 0.0,
+        "haze": 0.4,
+        "total": 0.2
+      }
+    }
+  },
+  "defocus blur+jpeg compression artifact": {
+    "jpeg compression artifact removal+defocus deblurring": {
+      "total": 240,
+      "defocus blur": 24,
+      "jpeg compression artifact": 74,
+      "fail rate": {
+        "defocus blur": 0.1,
+        "jpeg compression artifact": 0.30833333333333335,
+        "total": 0.20416666666666666
+      }
+    },
+    "defocus deblurring+jpeg compression artifact removal": {
+      "total": 240,
+      "defocus blur": 19,
+      "jpeg compression artifact": 114,
+      "fail rate": {
+        "defocus blur": 0.07916666666666666,
+        "jpeg compression artifact": 0.475,
+        "total": 0.27708333333333335
+      }
+    }
+  },
+  "motion blur+dark": {
+    "motion deblurring+brightening": {
+      "total": 240,
+      "motion blur": 52,
+      "dark": 59,
+      "fail rate": {
+        "motion blur": 0.21666666666666667,
+        "dark": 0.24583333333333332,
+        "total": 0.23125
+      }
+    },
+    "brightening+motion deblurring": {
+      "total": 240,
+      "motion blur": 66,
+      "dark": 59,
+      "fail rate": {
+        "motion blur": 0.275,
+        "dark": 0.24583333333333332,
+        "total": 0.2604166666666667
+      }
+    }
+  },
+  "motion blur+low resolution": {
+    "motion deblurring+super-resolution": {
+      "total": 400,
+      "motion blur": 93,
+      "low resolution": 37,
+      "fail rate": {
+        "motion blur": 0.2325,
+        "low resolution": 0.0925,
+        "total": 0.1625
+      }
+    },
+    "super-resolution+motion deblurring": {
+      "total": 400,
+      "motion blur": 123,
+      "low resolution": 26,
+      "fail rate": {
+        "motion blur": 0.3075,
+        "low resolution": 0.065,
+        "total": 0.18625
+      }
+    }
+  },
+  "noise+jpeg compression artifact": {
+    "denoising+jpeg compression artifact removal": {
+      "total": 480,
+      "noise": 184,
+      "jpeg compression artifact": 62,
+      "fail rate": {
+        "noise": 0.38333333333333336,
+        "jpeg compression artifact": 0.12916666666666668,
+        "total": 0.25625000000000003
+      }
+    },
+    "jpeg compression artifact removal+denoising": {
+      "total": 480,
+      "noise": 183,
+      "jpeg compression artifact": 66,
+      "fail rate": {
+        "noise": 0.38125,
+        "jpeg compression artifact": 0.1375,
+        "total": 0.259375
+      }
+    }
+  },
+  "rain+haze": {
+    "deraining+dehazing": {
+      "total": 320,
+      "rain": 15,
+      "haze": 119,
+      "fail rate": {
+        "rain": 0.046875,
+        "haze": 0.371875,
+        "total": 0.209375
+      }
+    },
+    "dehazing+deraining": {
+      "total": 320,
+      "rain": 80,
+      "haze": 76,
+      "fail rate": {
+        "rain": 0.25,
+        "haze": 0.2375,
+        "total": 0.24375
+      }
+    }
+  },
+  "rain+low resolution": {
+    "deraining+super-resolution": {
+      "total": 400,
+      "rain": 103,
+      "low resolution": 9,
+      "fail rate": {
+        "rain": 0.2575,
+        "low resolution": 0.0225,
+        "total": 0.14
+      }
+    },
+    "super-resolution+deraining": {
+      "total": 400,
+      "rain": 251,
+      "low resolution": 2,
+      "fail rate": {
+        "rain": 0.6275,
+        "low resolution": 0.005,
+        "total": 0.31625
+      }
+    }
+  }
+}

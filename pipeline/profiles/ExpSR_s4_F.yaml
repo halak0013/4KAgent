@@ -1,0 +1,14 @@
+Name: ExpSR-s4-F
+
+PerceptionAgent: llama_vision  
+PerceptionAgent_Seed: 1994
+Reflection: hpsv2+metric  
+
+Upscale4K: false
+ScaleFactor: 4
+RestoreOption: super-resolution
+
+FaceRestore: false
+Brightening: false
+
+RestorePerference: Fidelity

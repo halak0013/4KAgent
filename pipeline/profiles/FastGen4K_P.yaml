@@ -1,0 +1,15 @@
+Name: FastGen4K-P
+
+PerceptionAgent: depictqa  
+Reflection: hpsv2+metric  
+
+Upscale4K: true
+ScaleFactor: null
+RestoreOption: null
+
+FaceRestore: true
+Brightening: false
+
+RestorePerference: Perception
+
+Fast4kSideThres: 1024

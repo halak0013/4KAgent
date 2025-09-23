@@ -1,0 +1,1 @@
+CUDA_VISIBLE_DEVICES=0 python drct/test.py -opt options/test/DRCT-L_SRx4_classicsr.yml

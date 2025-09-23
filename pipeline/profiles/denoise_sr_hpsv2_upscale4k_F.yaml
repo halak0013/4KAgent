@@ -1,0 +1,20 @@
+Name: denoise_sr_hpsv2_upscale4k_F
+
+PerceptionAgent: llama_vision
+PerceptionAgent_Seed: 1994
+Reflection: hpsv2+metric
+
+with_rollback: False
+
+Upscale4K: True
+require_sr_size: 300
+ScaleFactor: null
+RestoreOption: null
+
+FaceRestore: True
+Brightening: False
+
+RestorePerference: Fidelity
+
+User_Define: True
+User_Define_Plan: ["denoising", "super-resolution", "super-resolution"]

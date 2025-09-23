@@ -1,0 +1,13 @@
+Name: GenSRFR-s4-P
+
+PerceptionAgent: depictqa  
+Reflection: hpsv2+metric 
+
+Upscale4K: false
+ScaleFactor: 4
+RestoreOption: null
+
+FaceRestore: true
+Brightening: false
+
+RestorePerference: Perception

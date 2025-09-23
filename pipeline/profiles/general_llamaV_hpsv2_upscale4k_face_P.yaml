@@ -1,0 +1,17 @@
+Name: general_llamaV_hpsv2_upscale4k_face_P
+
+PerceptionAgent: llama_vision 
+PerceptionAgent_Seed: 1994
+Reflection: hpsv2+metric 
+
+Upscale4K: True
+ScaleFactor: null
+RestoreOption: null
+
+FaceRestore: True
+Brightening: False
+
+RestorePerference: Perception
+
+User_Define: False
+User_Define_Plan: None

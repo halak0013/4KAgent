@@ -1,0 +1,7 @@
+mkdir train_on_GoPro
+mkdir train_on_RealBlurJ
+mkdir train_on_RealBlurR
+
+gdown 1Slda8ELbNtw82-AV89dO7zd4aOD-6U7k -O train_on_GoPro/net_g_latest.pth
+gdown 19GgXdBEU2BXNPvhNg8lHNmV3b_N9g0Ao -O train_on_RealBlurJ/net_g_latest.pth
+gdown 1-deftM3xBd506yaLlnOAafUDKSwiUMHB -O train_on_RealBlurR/net_g_latest.pth

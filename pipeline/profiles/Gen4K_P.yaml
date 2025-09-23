@@ -1,0 +1,13 @@
+Name: Gen4K-P
+
+PerceptionAgent: depictqa  
+Reflection: hpsv2+metric  
+
+Upscale4K: true
+ScaleFactor: null
+RestoreOption: null
+
+FaceRestore: true
+Brightening: false
+
+RestorePerference: Perception
