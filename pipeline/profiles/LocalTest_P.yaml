@@ -1,0 +1,33 @@
+Name: LocalTest-P
+
+# Use Llama Vision (local, no API needed)
+PerceptionAgent: llama_vision  
+PerceptionAgent_Seed: 1994
+
+# Use HPSV2 for reflection (local metric)
+Reflection: hpsv2+metric  
+
+# 4K upscaling settings
+Upscale4K: true
+ScaleFactor: null
+RestoreOption: null
+
+# Enable face restoration
+FaceRestore: true
+OldPhotoRestoration: false
+Brightening: false
+
+RestorePerference: Perception
+
+# No custom plan needed
+User_Define: false
+User_Define_Plan: null
+
+# Rollback enabled for stability
+with_rollback: true
+
+ImgType: General
+
+# Performance settings
+Fast4K: false
+Fast4kSideThres: 1024
