@@ -107,7 +107,18 @@ def load_file_from_url(url, model_dir=None, progress=True, file_name=None):
     cached_file = os.path.abspath(os.path.join(model_dir, filename))
     if not os.path.exists(cached_file):
         print(f'Downloading: "{url}" to {cached_file}\n')
-        download_url_to_file(url, cached_file, hash_prefix=None, progress=progress)
+        try:
+            download_url_to_file(url, cached_file, hash_prefix=None, progress=progress)
+        except Exception as e:
+            if "401" in str(e) or "Unauthorized" in str(e):
+                print(f"Warning: Download failed with authentication error. {str(e)}")
+                if os.path.exists(cached_file):
+                    os.remove(cached_file)
+                raise RuntimeError(
+                    f"Failed to download {url}. This may require HuggingFace authentication. "
+                    f"Please ensure the model file exists or check your internet connection and HuggingFace credentials."
+                )
+            raise
     return cached_file
 
 
