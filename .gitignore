@@ -95,3 +95,6 @@ executor/defocus_deblurring/tools/AutoDIR/src
 
 # temp files & folders
 test_tool/results
+
+*.md
+*tar.gz

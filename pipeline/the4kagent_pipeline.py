@@ -241,6 +241,7 @@ class The4KAgent:
         )
         
         # experience
+        self.schedule_experience: str = ""
         if self.with_retrieval:
             assert schedule_experience_path is not None, "Experience should be provided."
             with open(schedule_experience_path, "r") as f:
@@ -836,6 +837,9 @@ class The4KAgent:
         max_side = max(img_shape)
         updated_toolbox = self.tool_selection(subtask, toolbox, max_side)
 
+        best_img_path = None
+        best_img_score = 0.0
+        
         for tool in updated_toolbox:
             self.work_mem["n_invocations"] += 1
             # prepare directory
@@ -863,7 +867,8 @@ class The4KAgent:
                 res_degra_level_dict.setdefault(self.reflect_by, []).append(output_path)
             else:
                 best_tool_name = tool.tool_name
-                # best_img_path = output_path
+                best_img_path = output_path
+                best_img_score = 1.0
                 res_degra_level = "none"
                 self._record_tool_res(output_path)
                 break
