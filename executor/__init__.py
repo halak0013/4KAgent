@@ -162,6 +162,9 @@ class Executor:
                     
                 except Exception as e:
                     error_msg = str(e)
+                    # Print the error for debugging
+                    print(f"\nTOOL FAILED: {tool.tool_name}")
+                    print(f"Error: {error_msg}\n")
                     # Extract only the first line of error for readability
                     error_msg = error_msg.split('\n')[0] if '\n' in error_msg else error_msg
                     failed_tools.append((subtask_name, tool.tool_name, error_msg))
@@ -175,15 +178,29 @@ class Executor:
             
         end_time = time.time()
         consumed_time = end_time - start_time
+        print(f"\n{'='*80}")
+        print(f"TEST SUMMARY")
+        print(f"{'='*80}")
         print(f"Time elapsed: {consumed_time:.2f}s")
-        print(f"Tool count: {tool_cnt}")
-        print(f"Average time per tool: {consumed_time / tool_cnt:.2f}s")
+        print(f"Total tools tested: {tool_cnt}")
+        if tool_cnt > 0:
+            print(f"Average time per tool: {consumed_time / tool_cnt:.2f}s")
+        
+        successful_tools = tool_cnt - len(failed_tools)
+        print(f"\nSuccessful tools: {successful_tools}")
+        print(f"Failed tools: {len(failed_tools)}")
+        
         if misaligned_tools:
-            print(f"Tools that cannot keep the image size: {misaligned_tools}")
+            print(f"\n Tools with misaligned output ({len(misaligned_tools)}):")
+            for subtask, tool_name in misaligned_tools:
+                print(f"  - {subtask} / {tool_name}")
+        
         if failed_tools:
-            print(f"Failed tools:")
+            print(f"\nFailed tools ({len(failed_tools)}):")
             for subtask, tool_name, error in failed_tools:
-                print(f"  - {subtask} / {tool_name}: {error}")
+                print(f"  - {subtask} / {tool_name}")
+                print(f"    Error: {error}")
+        print(f"{'='*80}\n")
 
 
 

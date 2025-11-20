@@ -62,9 +62,16 @@ class Tool:
         if len(output) == 0:
             # Tool didn't produce any output - provide detailed error message
             all_files = list(self.output_dir.glob('*'))
-            error_msg = f"Tool '{self.tool_name}' produced no output in {self.output_dir}."
+            error_msg = f"\n{'='*80}\nERROR: Tool '{self.tool_name}' produced NO OUTPUT!\n{'='*80}\n"
+            error_msg += f"Output directory: {self.output_dir}\n"
             if all_files:
-                error_msg += f" Found {len(all_files)} file(s): {[f.name for f in all_files]}"
+                error_msg += f"Found {len(all_files)} file(s) (but not image files):\n"
+                for f in all_files:
+                    error_msg += f"  - {f.name}\n"
+            else:
+                error_msg += "Output directory is EMPTY - tool did not produce any files!\n"
+            error_msg += f"{'='*80}\n"
+            print(error_msg)
             raise AssertionError(error_msg)
         
         # If multiple image files exist, keep only the first one (by modification time)
@@ -103,15 +110,18 @@ class Tool:
         else:
             cmd = self._get_cmd()
 
+        # Run with stdout/stderr visible so we can see errors
         try:
-            subprocess.run(cmd, cwd=self.work_dir, shell=True, check=True,
-                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            result = subprocess.run(cmd, cwd=self.work_dir, shell=True, check=False)
+            if result.returncode != 0:
+                raise subprocess.CalledProcessError(result.returncode, cmd)
         except subprocess.CalledProcessError as e:
-            # Re-run to capture output for debugging
-            result = subprocess.run(cmd, cwd=self.work_dir, shell=True, check=False,
-                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-            error_output = result.stdout if result.stdout else "(no output captured)"
-            raise RuntimeError(f"Tool '{self.tool_name}' failed with exit code {result.returncode}.\nError output:\n{error_output}")
+            error_msg = f"\n{'='*80}\nERROR: Tool '{self.tool_name}' failed!\n{'='*80}\n"
+            error_msg += f"Command: {cmd}\n"
+            error_msg += f"Working directory: {self.work_dir}\n"
+            error_msg += f"Exit code: {e.returncode}\n"
+            error_msg += f"{'='*80}\n"
+            raise RuntimeError(error_msg)
         
         self._postprocess()
 
