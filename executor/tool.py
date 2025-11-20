@@ -58,9 +58,33 @@ class Tool:
 
     def _postcheck(self) -> None:
         output = [file for file in self.output_dir.glob('*') if file.suffix in ['.png', '.jpg', '.jpeg', '.bmp', '.tiff']]
-        assert len(output) == 1, "There are other files in the same directory as the output image."
-        if output[0].name != 'output.png':
-            output[0].replace(self.output_dir / 'output.png')
+        
+        if len(output) == 0:
+            # Tool didn't produce any output - provide detailed error message
+            all_files = list(self.output_dir.glob('*'))
+            error_msg = f"Tool '{self.tool_name}' produced no output in {self.output_dir}."
+            if all_files:
+                error_msg += f" Found {len(all_files)} file(s): {[f.name for f in all_files]}"
+            raise AssertionError(error_msg)
+        
+        # If multiple image files exist, keep only the first one (by modification time)
+        if len(output) > 1:
+            output = sorted(output, key=lambda x: x.stat().st_mtime)
+            output_file = output[0]
+            # Remove other image files
+            for extra_file in output[1:]:
+                extra_file.unlink()
+        else:
+            output_file = output[0]
+        
+        # Rename to output.png if not already named that
+        if output_file.name != 'output.png':
+            output_file.replace(self.output_dir / 'output.png')
+        
+        # Clean up any non-image files
+        for file in self.output_dir.glob('*'):
+            if file.is_file() and file.suffix not in ['.png', '.jpg', '.jpeg', '.bmp', '.tiff']:
+                file.unlink()
 
     def _invoke(self, *args) -> None:
         self._preprocess()
@@ -79,10 +103,16 @@ class Tool:
         else:
             cmd = self._get_cmd()
 
-        subprocess.run(cmd, cwd=self.work_dir, shell=True, check=True,
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        # Debug
-        # subprocess.run(cmd, cwd=self.work_dir, shell=True, check=True)
+        try:
+            subprocess.run(cmd, cwd=self.work_dir, shell=True, check=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except subprocess.CalledProcessError as e:
+            # Re-run to capture output for debugging
+            result = subprocess.run(cmd, cwd=self.work_dir, shell=True, check=False,
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            error_output = result.stdout if result.stdout else "(no output captured)"
+            raise RuntimeError(f"Tool '{self.tool_name}' failed with exit code {result.returncode}.\nError output:\n{error_output}")
+        
         self._postprocess()
 
     def _get_cmd(self) -> str:

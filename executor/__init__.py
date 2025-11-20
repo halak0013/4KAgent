@@ -123,6 +123,8 @@ class Executor:
         imgs = sorted(list(input_dir.glob('*')))
         tool_cnt = 0
         misaligned_tools: list[tuple[Subtask, ToolName]] = []
+        failed_tools: list[tuple[Subtask, ToolName, str]] = []
+        
         for i, img_path in enumerate(imgs):
             input_shape = cv2.imread(str(img_path)).shape
 
@@ -140,23 +142,49 @@ class Executor:
                 tool_idx += 1
                 tool_dir = subtask_dir / f'{tool_idx}_{tool.tool_name}'
                 tool_dir.mkdir()
-                tool(new_input_dir, output_dir=tool_dir)
-                output_path = [file for file in tool_dir.glob('*') if file.suffix in ['.png', '.jpg', '.jpeg', '.bmp', '.tiff']][0]
-                output_shape = cv2.imread(str(output_path)).shape
-                if not _check_shape(input_shape, output_shape):
-                    misaligned_tools.append((subtask_name, tool.tool_name))
-                output_path.replace(subtask_dir / f'{tool_idx}_{tool.tool_name}.png')
-                tool_dir.rmdir()
+                
+                try:
+                    tool(new_input_dir, output_dir=tool_dir)
+                    output_files = [file for file in tool_dir.glob('*') if file.suffix in ['.png', '.jpg', '.jpeg', '.bmp', '.tiff']]
+                    
+                    if len(output_files) == 0:
+                        failed_tools.append((subtask_name, tool.tool_name, "No output image produced"))
+                        if tool_dir.exists():
+                            shutil.rmtree(tool_dir)
+                        continue
+                    
+                    output_path = output_files[0]
+                    output_shape = cv2.imread(str(output_path)).shape
+                    if not _check_shape(input_shape, output_shape):
+                        misaligned_tools.append((subtask_name, tool.tool_name))
+                    output_path.replace(subtask_dir / f'{tool_idx}_{tool.tool_name}.png')
+                    tool_dir.rmdir()
+                    
+                except Exception as e:
+                    error_msg = str(e)
+                    # Extract only the first line of error for readability
+                    error_msg = error_msg.split('\n')[0] if '\n' in error_msg else error_msg
+                    failed_tools.append((subtask_name, tool.tool_name, error_msg))
+                    if tool_dir.exists():
+                        shutil.rmtree(tool_dir)
 
             new_input_path.replace(subtask_dir / 'input.png')
-            new_input_dir.rmdir()
+            # Use rmtree to handle case where directory isn't empty
+            if new_input_dir.exists():
+                shutil.rmtree(new_input_dir)
             
         end_time = time.time()
         consumed_time = end_time - start_time
         print(f"Time elapsed: {consumed_time:.2f}s")
         print(f"Tool count: {tool_cnt}")
         print(f"Average time per tool: {consumed_time / tool_cnt:.2f}s")
-        print(f"Tools that cannot keep the image size: {misaligned_tools}")
+        if misaligned_tools:
+            print(f"Tools that cannot keep the image size: {misaligned_tools}")
+        if failed_tools:
+            print(f"Failed tools:")
+            for subtask, tool_name, error in failed_tools:
+                print(f"  - {subtask} / {tool_name}: {error}")
+
 
 
 # make singleton
