@@ -5,7 +5,6 @@
 *.pt
 *.ckpt
 *.vscode
-src
 
 # Run history
 .history/
